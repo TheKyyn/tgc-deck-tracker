@@ -39,6 +39,7 @@ class DeckStats extends Component
 
     public function render()
     {
-        return view('livewire.deck-stats', ['decks' => $this->decks]);
+        return view('livewire.deck-stats')
+            ->layout('layouts.base');
     }
 }
