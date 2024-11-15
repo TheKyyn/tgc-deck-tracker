@@ -1,6 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\DeckStats;
+use App\Livewire\DeckStats;
 
 Route::get('/', DeckStats::class);
