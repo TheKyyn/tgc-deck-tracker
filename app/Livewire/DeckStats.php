@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Deck;
-use App\Models\Match;
 use Livewire\Component;
 use App\Models\PokemonMatch;
 
