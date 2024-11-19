@@ -1,37 +1,25 @@
-<div>
-    <h1>{{ __('Pokémon Deck Tracker') }}</h1>
-    <div>
-        @foreach ($decks as $deck)
-        <div>
-            <h3>{{ $deck->name }}</h3>
-            <p>{{ __('Wins:') }}' {{ $deck->wins }}</p>
-            <p>{{ __('Losses:') }} {{ $deck->losses }}</p>
-            <p>{{ __('Total Matches:') }}' {{ $deck->wins + $deck->losses }}</p>
-            <p>{{ __('Win Rate:') }}' {{ $deck->wins + $deck->losses > 0 ? round(($deck->wins / ($deck->wins + $deck->losses)) * 100, 2) : 0 }}%</p>
-            <h4>{{ __('Match History:') }}</h4>
-            <ul>
-                @foreach ($deck->matches as $match)
-                <li>{{ ucfirst($match->result) }} vs {{ $match->opponent }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endforeach
+<div class="bg-gray-50 min-h-screen p-8">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-indigo-600">{{ $deck->name }} {{ __('Stats') }}</h1>
+        <a href="{{ route('home') }}" class="bg-gray-200 text-gray-800 text-sm px-4 py-2 rounded-md hover:bg-gray-300">
+            {{ __('Retour à l\'accueil') }}
+        </a>
     </div>
 
-    <div>
-        <h2>{{ __('Add Match') }}</h2>
-        <select wire:model="selectedDeck">
-            <option value="">{{ __('Select Deck') }}</option>
-            @foreach ($decks as $deck)
-            <option value="{{ $deck->id }}">{{ $deck->name }}</option>
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <p class="text-lg font-semibold">{{ __('Total Matches:') }} {{ $deck->wins + $deck->losses }}</p>
+        <p class="text-lg text-green-500">{{ __('Wins:') }} {{ $deck->wins }}</p>
+        <p class="text-lg text-red-500">{{ __('Losses:') }} {{ $deck->losses }}</p>
+        <p class="text-lg">{{ __('Win Rate:') }}
+            {{ $deck->wins + $deck->losses > 0 ? round(($deck->wins / ($deck->wins + $deck->losses)) * 100, 2) : 0 }}%
+        </p>
+        <h3 class="text-xl font-bold mt-6">{{ __('Match History') }}</h3>
+        <ul class="list-disc list-inside">
+            @foreach ($deck->matches as $match)
+                <li class="{{ $match->result === 'win' ? 'text-green-500' : 'text-red-500' }}">
+                    {{ ucfirst($match->result) }} vs {{ $match->opponent }}
+                </li>
             @endforeach
-        </select>
-        <input type="text" wire:model="opponent" placeholder="Opponent Name">
-        <select wire:model="result">
-            <option value="">{{ __('Select Result') }}</option>
-            <option value="win">{{ __('Win') }}</option>
-            <option value="loss">{{ __('Loss') }}</option>
-        </select>
-        <button wire:click="recordMatch">{{ __('Add Match') }}</button>
+        </ul>
     </div>
 </div>

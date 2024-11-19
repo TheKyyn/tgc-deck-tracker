@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('decks', function (Blueprint $table) {
+        Schema::create('pokemon_matches', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('image')->nullable();
-            $table->integer('wins')->default(0);
-            $table->integer('losses')->default(0);
+            $table->foreignId('deck_id')->constrained('decks')->onDelete('cascade');
+            $table->string('opponent');
+            $table->enum('result', ['win', 'loss']);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('decks');
+        Schema::dropIfExists('pokemon_matches');
     }
 };

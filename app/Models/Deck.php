@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +11,7 @@ class Deck extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'wins', 'losses'];
+    protected $fillable = ['name', 'image', 'wins', 'losses'];
 
     public function matches()
     {
