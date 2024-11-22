@@ -1,25 +1,37 @@
-<div class="bg-gray-50 min-h-screen p-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-indigo-600">{{ $deck->name }} {{ __('Stats') }}</h1>
-        <a href="{{ route('home') }}" class="bg-gray-200 text-gray-800 text-sm px-4 py-2 rounded-md hover:bg-gray-300">
-            {{ __('Retour à l\'accueil') }}
-        </a>
-    </div>
+<x-filament-panels::page>
+    <x-filament-panels::header>
+        <x-slot name="heading">
+            {{ $deck->name }} {{ __('Stats') }}
+        </x-slot>
 
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <p class="text-lg font-semibold">{{ __('Total Matches:') }} {{ $deck->wins + $deck->losses }}</p>
-        <p class="text-lg text-green-500">{{ __('Wins:') }} {{ $deck->wins }}</p>
-        <p class="text-lg text-red-500">{{ __('Losses:') }} {{ $deck->losses }}</p>
-        <p class="text-lg">{{ __('Win Rate:') }}
-            {{ $deck->wins + $deck->losses > 0 ? round(($deck->wins / ($deck->wins + $deck->losses)) * 100, 2) : 0 }}%
-        </p>
-        <h3 class="text-xl font-bold mt-6">{{ __('Match History') }}</h3>
-        <ul class="list-disc list-inside">
-            @foreach ($deck->matches as $match)
-                <li class="{{ $match->result === 'win' ? 'text-green-500' : 'text-red-500' }}">
-                    {{ ucfirst($match->result) }} vs {{ $match->opponent }}
-                </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
+        <x-slot name="actions">
+            <x-filament::button :href="route('home')" color="secondary">
+                {{ __('Retour à l\'accueil') }}
+            </x-filament::button>
+        </x-slot>
+    </x-filament-panels::header>
+
+    <x-filament::card>
+        <div class="grid grid-cols-4 gap-4">
+            <x-filament::stats.card :label="__('Total Matches')" :value="$deck->wins + $deck->losses" icon="heroicon-o-collection" />
+            <x-filament::stats.card :label="__('Wins')" :value="$deck->wins" icon="heroicon-o-trending-up" color="success" />
+            <x-filament::stats.card :label="__('Losses')" :value="$deck->losses" icon="heroicon-o-trending-down" color="danger" />
+            <x-filament::stats.card :label="__('Win Rate')" :value="($deck->wins + $deck->losses > 0
+                ? round(($deck->wins / ($deck->wins + $deck->losses)) * 100, 2)
+                : 0) . '%'" icon="heroicon-o-chart-pie" />
+        </div>
+
+        <div class="mt-6">
+            <h3 class="text-xl font-bold mb-4">{{ __('Match History') }}</h3>
+            <div class="space-y-2">
+                @foreach ($deck->matches as $match)
+                    <div class="flex items-center p-2 bg-gray-50 rounded-lg">
+                        <x-heroicon-o-{{ $match->result === 'win' ? 'trending-up' : 'trending-down' }}
+                            class="w-5 h-5 {{ $match->result === 'win' ? 'text-success-500' : 'text-danger-500' }} mr-2" />
+                        {{ ucfirst($match->result) }} vs {{ $match->opponent }}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </x-filament::card>
+</x-filament-panels::page>
