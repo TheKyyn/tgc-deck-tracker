@@ -15,19 +15,19 @@ class DeckList extends Component
 
     protected $listeners = ['deckAdded' => 'refreshDecks'];
 
-    public function mount()
+    public function mount(): void
     {
         $this->refreshDecks();
         $this->calculateGlobalStats();
     }
 
-    public function refreshDecks()
+    public function refreshDecks(): void
     {
         $this->decks = Deck::all();
         $this->calculateGlobalStats();
     }
 
-    public function deleteDeck($deckId)
+    public function deleteDeck($deckId): void
     {
         $deck = Deck::findOrFail($deckId);
         $deck->delete();
@@ -35,7 +35,7 @@ class DeckList extends Component
         $this->refreshDecks();
     }
 
-    public function calculateGlobalStats()
+    public function calculateGlobalStats(): void
     {
         $this->totalWins = Deck::sum('wins');
         $this->totalLosses = Deck::sum('losses');
@@ -47,12 +47,7 @@ class DeckList extends Component
 
     public function render()
     {
-        return view('livewire.deck-list', [
-            'decks' => $this->decks,
-            'totalWins' => $this->totalWins,
-            'totalLosses' => $this->totalLosses,
-            'totalMatches' => $this->totalMatches,
-            'winRatio' => $this->winRatio,
-        ])->layout('layouts.app');
+        return view('livewire.deck-list')
+            ->layout('components.layouts.app');
     }
 }
